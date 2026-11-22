@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'org.brouw1.raiddesk'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "org.brouw1.raiddesk"
+        minSdk 30
+        targetSdk 35
+        versionCode 1
+        versionName "0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22") {
+            because("kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22") {
+            because("kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
+        }
+    }
+
+    implementation 'androidx.core:core:1.13.1'
+}
