@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.graphics.Insets;
+import android.view.ViewGroup;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,17 +22,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        webView = findViewById(R.id.webView);
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         ViewCompat.setOnApplyWindowInsetsListener(webView, (v, insets) -> {
-            int top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
-            int bottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
-            v.setPadding(0, top, 0, bottom);
-            return insets;
+    // Объединяем системные панели, вырезы экрана и клавиатуру
+            Insets bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() 
+                | WindowInsetsCompat.Type.displayCutout() 
+                | WindowInsetsCompat.Type.ime()
+            );
+
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            lp.leftMargin = bars.left;
+            lp.topMargin = bars.top;
+            lp.rightMargin = bars.right;
+            lp.bottomMargin = bars.bottom;
+            v.setLayoutParams(lp);
+
+            // Сообщаем системе, что отступы обработаны
+            return WindowInsetsCompat.CONSUMED;
         });
 
-        webView = findViewById(R.id.webView);
+
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
